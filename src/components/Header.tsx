@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { logOut, signIn } from "../auth/auth";
 import { useUserContext } from "../context/authContext";
 import blankImg from "../assets/blank.png";
+import Swal from "sweetalert2";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function Header() {
         <FiShoppingCart
           onClick={() => {
             if (userData) navigate("/cart");
-            else navigate("/");
+            else Swal.fire("로그인이 필요합니다.");
           }}
           className='text-4xl cursor-pointer hover:text-sky-400 hover:scale-110 ease-out transition-transform mx-2'
         />

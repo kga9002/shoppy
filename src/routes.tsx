@@ -7,6 +7,7 @@ import Cart from "./pages/Cart";
 import ProductDetail from "./pages/ProductDetail";
 import AdminAdd from "./pages/AdminAdd";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ValidateLogin from "./components/ValidateLogin";
 
 export const router = createBrowserRouter([
   {
@@ -21,9 +22,9 @@ export const router = createBrowserRouter([
       {
         path: "cart",
         element: (
-          <ProtectedRoute>
+          <ValidateLogin>
             <Cart />
-          </ProtectedRoute>
+          </ValidateLogin>
         ),
       },
       {
