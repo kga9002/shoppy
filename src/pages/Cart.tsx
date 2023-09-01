@@ -3,7 +3,7 @@ import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { useCartContext } from "../context/cartContext";
 import { BsFillTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { getDatabase, ref, remove } from "firebase/database";
+import { getDatabase, ref, remove, set, update } from "firebase/database";
 import { useUserContext } from "../context/authContext";
 import Swal from "sweetalert2";
 
@@ -64,14 +64,26 @@ export default function Cart() {
   };
 
   // 단일 상품 삭제
-  const removeProduct = (id: string) => {
-    remove(ref(db, "cart/" + userData?.uid + "/" + id));
+  const removeProduct = (id: string, option: string) => {
+    remove(ref(db, "cart/" + userData?.uid + "/" + id + option));
   };
 
   // 플러스,마이너스 버튼 따라서 수량 변경하기(set=>amount,price)
   const handleQuantity = (id: string, amount: number, option: string, type: string) => {
-    if (type === "minus") {
-    } else if (type === "plus") {
+    if (cart) {
+      const amount = Object.entries(cart).find((o) => o[0] === id + option)![1].amount;
+      const price = Object.entries(cart).find((o) => o[0] === id + option)![1].price / amount;
+      if (type === "minus") {
+        update(ref(db, "cart/" + userData?.uid + "/" + id + option), {
+          amount: amount - 1,
+          price: price * (amount - 1),
+        });
+      } else if (type === "plus") {
+        update(ref(db, "cart/" + userData?.uid + "/" + id + option), {
+          amount: amount + 1,
+          price: price * (amount + 1),
+        });
+      }
     }
   };
 
@@ -118,7 +130,7 @@ export default function Cart() {
                 </div>
               </div>
               <div
-                onClick={() => removeProduct(o[1].id)}
+                onClick={() => removeProduct(o[1].id, o[1].option)}
                 className='flex items-center justify-center ml-2 hover:text-red-400 cursor-pointer hover:scale-110 ease-out transition-transform'
               >
                 <BsFillTrashFill />
