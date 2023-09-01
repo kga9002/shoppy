@@ -34,9 +34,9 @@ export const router = createBrowserRouter([
       {
         path: "edit",
         element: (
-          <ProtectedRoute>
+          <ValidateLogin>
             <AdminAdd />
-          </ProtectedRoute>
+          </ValidateLogin>
         ),
       },
     ],

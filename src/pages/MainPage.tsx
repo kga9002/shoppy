@@ -50,15 +50,19 @@ export default function MainPage() {
                 })
                 .map((o) => (
                   <li key={o[1].id} className='cursor-pointer' onClick={() => navigate(`product/${o[1].id}`)}>
-                    <img src={o[1].image} alt={o[1].title} className='rounded-t-lg' />
-                    <div className='flex flex-row px-2 py-3 bg-gray-100 rounded-b-lg'>
-                      <div className='w-1/2 text-center'>
-                        <span className='w-full block font-semibold whitespace-nowrap overflow-hidden text-ellipsis'>
-                          {o[1].title}
-                        </span>
+                    <div className='w-full h-full'>
+                      <div className='rounded-t-lg w-full h-5/6 overflow-hidden'>
+                        <img src={o[1].image} alt={o[1].title} className='w-full h-full object-cover' />
                       </div>
-                      <div className='w-1/2 text-center'>
-                        <span className='inline font-semibold'>￦{Number(o[1].price).toLocaleString()}</span>
+                      <div className='flex flex-row px-2 py-3 bg-gray-100 rounded-b-lg'>
+                        <div className='w-1/2 text-center'>
+                          <span className='w-full block font-semibold whitespace-nowrap overflow-hidden text-ellipsis'>
+                            {o[1].title}
+                          </span>
+                        </div>
+                        <div className='w-1/2 text-center'>
+                          <span className='inline font-semibold'>￦{Number(o[1].price).toLocaleString()}</span>
+                        </div>
                       </div>
                     </div>
                   </li>
