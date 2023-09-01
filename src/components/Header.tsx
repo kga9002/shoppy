@@ -38,7 +38,7 @@ export default function Header() {
           </div>
         )}
         {/* admin 처리 */}
-        {userData && (
+        {userData?.email === "kga9002@intflow.ai" && (
           <MdModeEdit
             onClick={() => navigate("/edit")}
             className='text-4xl mx-2 cursor-pointer hover:text-sky-400 hover:scale-110 ease-out transition-transform'
