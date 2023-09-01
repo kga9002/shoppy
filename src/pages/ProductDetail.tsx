@@ -6,6 +6,7 @@ import { Product } from "../context/productContext";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { useUserContext } from "../context/authContext";
 import Swal from "sweetalert2";
+import { useCartContext } from "../context/cartContext";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -15,6 +16,7 @@ export default function ProductDetail() {
   const options = product?.options.split(",");
   const userData = useUserContext();
   const navigate = useNavigate();
+  const cart = useCartContext();
 
   useEffect(() => {
     const getDataRef = ref(database, "products/" + id);
@@ -24,14 +26,36 @@ export default function ProductDetail() {
     });
   }, []);
 
+  useEffect(() => {
+    if (cart) console.log();
+  });
+
   const addCart = () => {
     if (userData === null) Swal.fire("로그인이 필요합니다.");
     else {
       if (selectedOption === "" || amount === 0) Swal.fire("옵션과 수량을 선택해주세요.");
       else {
-        set(ref(database, "users/" + userData.uid + "/cart/" + product?.id + "/" + selectedOption), {
-          amount,
-        });
+        // 이미 담은 상품을 또 담는다면, 갯수만 증가
+        if (cart && Object.entries(cart).find((o) => o[1].id === product?.id && o[1].option === selectedOption)) {
+          set(ref(database, "cart/" + userData.uid + "/" + product?.id + selectedOption + "/"), {
+            option: selectedOption,
+            amount: Number(Object.entries(cart!).find((o) => o[1].id === product?.id)![1].amount) + amount,
+            title: product?.title,
+            image: product?.image,
+            price: product?.price! * amount,
+            id: product?.id,
+          });
+        } else {
+          set(ref(database, "cart/" + userData.uid + "/" + product?.id + selectedOption + "/"), {
+            option: selectedOption,
+            amount,
+            title: product?.title,
+            image: product?.image,
+            price: product?.price! * amount,
+            id: product?.id,
+          });
+        }
+
         Swal.fire({
           title: "장바구니에 추가되었습니다.",
           showDenyButton: true,

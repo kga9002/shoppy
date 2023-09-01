@@ -53,10 +53,12 @@ export default function MainPage() {
                     <img src={o[1].image} alt={o[1].title} className='rounded-t-lg' />
                     <div className='flex flex-row px-2 py-3 bg-gray-100 rounded-b-lg'>
                       <div className='w-1/2 text-center'>
-                        <p className='inline font-semibold'>{o[1].title}</p>
+                        <span className='w-full block font-semibold whitespace-nowrap overflow-hidden text-ellipsis'>
+                          {o[1].title}
+                        </span>
                       </div>
                       <div className='w-1/2 text-center'>
-                        <p className='inline font-semibold'>￦{o[1].price}</p>
+                        <span className='inline font-semibold'>￦{Number(o[1].price).toLocaleString()}</span>
                       </div>
                     </div>
                   </li>
